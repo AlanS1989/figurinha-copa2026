@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Figurinha Copa 2026 – Personalizadas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Nunito',sans-serif;background:#FFD700;min-height:100vh;color:#1a1a1a}
+/* LANDING */
+#landing{display:flex;flex-direction:column;align-items:center;min-height:100vh;padding:32px 20px 40px;text-align:center}
+.logo-badge{background:#1B3FA0;color:#fff;font-family:'Russo One',sans-serif;font-size:13px;letter-spacing:1px;padding:6px 20px;border-radius:20px;margin-bottom:24px}
+h1{font-family:'Russo One',sans-serif;font-size:clamp(26px,7vw,38px);line-height:1.15;color:#1B3FA0;text-transform:uppercase;max-width:480px;margin-bottom:8px}
+h1 span{color:#fff;-webkit-text-stroke:1px #1B3FA0}
+.counter-pill{background:#1B3FA0;color:#FFD700;border-radius:30px;padding:10px 28px;font-size:15px;font-weight:800;margin:20px 0;display:inline-flex;align-items:center;gap:8px}
+.counter-pill::before{content:'★';font-size:16px}
+.cards-preview{position:relative;width:280px;height:300px;margin:16px auto}
+.card-back{position:absolute;width:170px;border-radius:16px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.25)}
+.card-back:nth-child(1){left:0;top:20px;transform:rotate(-10deg);opacity:.8}
+.card-back:nth-child(3){right:0;top:20px;transform:rotate(10deg);opacity:.8}
+.card-back:nth-child(2){left:50%;transform:translateX(-50%);z-index:2}
+.card-img{width:100%;display:block}
+.subtitle{font-size:17px;color:#1B3FA0;font-weight:700;max-width:340px;line-height:1.6;margin:20px auto 32px}
+.btn-main{background:#1B3FA0;color:#fff;font-family:'Russo One',sans-serif;font-size:18px;letter-spacing:2px;border:none;border-radius:14px;padding:18px 0;width:100%;max-width:400px;cursor:pointer;transition:transform .15s,box-shadow .15s;box-shadow:0 6px 20px rgba(27,63,160,.4)}
+.btn-main:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(27,63,160,.5)}
+/* FORM WRAPPER */
+#formWrap{display:none;min-height:100vh;background:#FFD700;padding:20px 16px 40px;align-items:flex-start;justify-content:center}
+.progress-bar-wrap{width:100%;max-width:420px;height:6px;background:rgba(27,63,160,.2);border-radius:3px;margin:0 auto 20px;overflow:hidden}
+.progress-bar-fill{height:100%;background:#1B3FA0;border-radius:3px;transition:width .4s}
+.step-card{background:#fff;border-radius:24px;padding:28px 24px;max-width:420px;width:100%;margin:0 auto;box-shadow:0 8px 32px rgba(0,0,0,.12)}
+.step-emoji{font-size:42px;display:block;text-align:center;margin-bottom:12px}
+.step-title{font-family:'Russo One',sans-serif;color:#1B3FA0;font-size:22px;text-align:center;text-transform:uppercase;margin-bottom:6px}
+.step-sub{font-size:14px;color:#555;text-align:center;margin-bottom:24px;font-style:italic}
+.field-label{font-family:'Russo One',sans-serif;font-size:11px;letter-spacing:1px;color:#1B3FA0;margin-bottom:6px;display:block;text-transform:uppercase}
+.field-input{width:100%;border:2px solid #e0e0e0;border-radius:12px;padding:14px 16px;font-size:16px;font-family:'Nunito',sans-serif;outline:none;transition:border-color .2s;margin-bottom:18px}
+.field-input:focus{border-color:#1B3FA0}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px}
+.row3 select{width:100%;border:2px solid #e0e0e0;border-radius:12px;padding:13px 10px;font-size:15px;font-family:'Nunito',sans-serif;outline:none;background:#fff;cursor:pointer}
+.row3 select:focus{border-color:#1B3FA0}
+.upload-zone{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.upload-box{border:2.5px dashed #ccc;border-radius:14px;padding:20px 12px;text-align:center;cursor:pointer;transition:border-color .2s;font-size:13px;font-weight:700;color:#555;display:flex;flex-direction:column;align-items:center;gap:8px}
+.upload-box:hover{border-color:#1B3FA0;color:#1B3FA0}
+.upload-box .uicon{font-size:32px}
+.upload-box input{display:none}
+.upload-preview{width:70px;height:70px;object-fit:cover;border-radius:50%;border:3px solid #1B3FA0;margin:0 auto 8px}
+.nav-row{display:flex;gap:12px;margin-top:8px}
+.btn-back{flex:1;background:#fff;color:#1B3FA0;border:2px solid #1B3FA0;border-radius:12px;padding:14px;font-family:'Russo One',sans-serif;font-size:14px;letter-spacing:1px;cursor:pointer;text-transform:uppercase}
+.btn-next{flex:2;background:#1B3FA0;color:#fff;border:none;border-radius:12px;padding:14px;font-family:'Russo One',sans-serif;font-size:15px;letter-spacing:1px;cursor:pointer;text-transform:uppercase;transition:opacity .2s}
+.btn-next:hover{opacity:.9}
+.dots{display:flex;justify-content:center;gap:8px;margin-top:20px}
+.dot{width:12px;height:12px;border-radius:50%;background:rgba(27,63,160,.25);transition:background .3s}
+.dot.active{background:#1B3FA0}
+/* REVIEW */
+.review-photo{width:80px;height:80px;object-fit:cover;border-radius:50%;border:3px solid #1B3FA0;display:block;margin:0 auto 16px}
+.review-table{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:20px}
+.review-table tr:nth-child(odd){background:#f7f7f7}
+.review-table td{padding:10px 12px;border-radius:6px}
+.review-table td:first-child{font-family:'Russo One',sans-serif;font-size:11px;letter-spacing:1px;color:#1B3FA0;text-transform:uppercase;width:40%}
+.warning-msg{background:#fff8e1;border-left:4px solid #1B3FA0;border-radius:8px;padding:10px 14px;font-size:13px;color:#1B3FA0;font-weight:700;margin-bottom:18px}
+/* LOADING */
+#loadingScreen{display:none;min-height:100vh;background:#FFD700;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px;text-align:center}
+.loading-card{background:#fff;border-radius:24px;padding:32px 24px;max-width:400px;width:100%}
+.loading-title{font-family:'Russo One',sans-serif;color:#1B3FA0;font-size:24px;text-transform:uppercase;margin-bottom:6px}
+.loading-sub{font-size:13px;color:#1B3FA0;font-weight:700;margin-bottom:20px}
+.loading-img{width:80%;max-width:260px;border-radius:12px;margin:0 auto 20px;display:block}
+.loading-promo{font-size:17px;color:#1B3FA0;font-weight:800;line-height:1.5;margin-bottom:12px}
+.loading-promo span{color:#27ae60;font-size:26px;font-family:'Russo One',sans-serif;display:block}
+.loading-date{font-size:14px;color:#1B3FA0;font-weight:800;margin-bottom:20px}
+.progress-wrap{display:flex;justify-content:space-between;font-size:13px;color:#777;margin-bottom:6px}
+.progress-outer{background:#eee;border-radius:10px;height:10px;overflow:hidden}
+.progress-inner{height:100%;background:#1B3FA0;border-radius:10px;transition:width 1s linear}
+/* RESULT */
+#resultScreen{display:none;min-height:100vh;background:#FFD700;flex-direction:column;align-items:center;padding:24px 16px 40px;text-align:center}
+.figurinha-wrap{position:relative;display:inline-block;margin-bottom:16px}
+.figurinha-img{width:240px;border-radius:18px;display:block}
+.watermark-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;border-radius:18px;overflow:hidden}
+.watermark-overlay svg{position:absolute;inset:0;width:100%;height:100%;opacity:.55}
+.gol-text{font-family:'Russo One',sans-serif;font-size:36px;color:#1B3FA0;text-transform:uppercase;margin-bottom:4px}
+.ready-text{font-size:18px;color:#1B3FA0;font-weight:800;margin-bottom:8px}
+.price-big{font-family:'Russo One',sans-serif;font-size:48px;color:#27ae60;margin:12px 0}
+.access-note{font-size:13px;font-weight:700;color:#1B3FA0;margin:8px 0 20px}
+.access-note span{color:#27ae60}
+.pay-info{font-size:14px;color:#555;max-width:340px;margin:0 auto 20px;line-height:1.6}
+</style>
+</head>
+<body>
+
+<!-- LANDING -->
+<section id="landing">
+  <div class="logo-badge">⚽ COPA DO MUNDO 2026</div>
+  <h1>Transforme seu filho em uma <span>Figurinha Personalizada</span> da Copa do Mundo</h1>
+  <div class="counter-pill">+25.000 figurinhas já criadas</div>
+  <div class="cards-preview">
+    <div class="card-back" style="left:10px;top:30px;transform:rotate(-12deg)">
+      <img class="card-img" src="https://placehold.co/170x240/0B7A3E/white?text=⚽" alt=""/>
+    </div>
+    <div class="card-back" style="left:50%;transform:translateX(-50%);z-index:2">
+      <img class="card-img" src="https://placehold.co/170x240/1B3FA0/FFD700?text=MIGUEL" alt="Figurinha exemplo"/>
+    </div>
+    <div class="card-back" style="right:10px;top:30px;transform:rotate(12deg)">
+      <img class="card-img" src="https://placehold.co/170x240/0B7A3E/white?text=⚽" alt=""/>
+    </div>
+  </div>
+  <p class="subtitle">Responda algumas perguntas rápidas e veja como criar uma figurinha exclusiva, com o nome, foto e estilo do seu pequeno craque.</p>
+  <button class="btn-main" onclick="startForm()">INICIAR</button>
+</section>
+
+<!-- FORM WRAPPER -->
+<section id="formWrap" style="display:none;flex-direction:column">
+  <div style="max-width:420px;width:100%;margin:0 auto">
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill" style="width:25%"></div></div>
+  </div>
+
+  <!-- STEP 1: Nome + Foto -->
+  <div id="step1" class="step-card">
+    <span class="step-emoji">✍️</span>
+    <div class="step-title">Qual o nome do craque?</div>
+    <p class="step-sub">O nome que vai aparecer na figurinha</p>
+    <label class="field-label">Nome e sobrenome</label>
+    <input class="field-input" id="inputNome" type="text" placeholder="Ex: Miguel Santos"/>
+    <label class="field-label">Foto do craque</label>
+    <div class="upload-zone">
+      <label class="upload-box" id="uploadGalleryBox">
+        <span class="uicon">🖼️</span>
+        <span>Enviar foto<br/><strong>DO ROSTO</strong>,<br/>não de corpo</span>
+        <input type="file" id="inputFoto" accept="image/*" onchange="handlePhoto(this)"/>
+      </label>
+      <label class="upload-box" id="uploadCamBox">
+        <span class="uicon">📸</span>
+        <span>Câmera</span>
+        <input type="file" id="inputFotoCam" accept="image/*" capture="user" onchange="handlePhoto(this)"/>
+      </label>
+    </div>
+    <img id="photoPreview" style="display:none" class="upload-preview" alt="preview"/>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goLanding()">← VOLTAR</button>
+      <button class="btn-next" onclick="goStep(2)">PRÓXIMO →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: Data + Email -->
+  <div id="step2" class="step-card" style="display:none">
+    <span class="step-emoji">🎂</span>
+    <div class="step-title">Data de Nascimento</div>
+    <p class="step-sub">Pra calcular a idade na figurinha</p>
+    <label class="field-label">Data</label>
+    <div class="row3" id="dateRow">
+      <select id="selDia"><option value="">DIA</option></select>
+      <select id="selMes"><option value="">MÊS</option></select>
+      <select id="selAno"><option value="">ANO</option></select>
+    </div>
+    <label class="field-label">Seu melhor e-mail</label>
+    <input class="field-input" id="inputEmail" type="email" placeholder="exemplo@email.com"/>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goStep(1)">VOLTAR</button>
+      <button class="btn-next" onclick="goStep(3)">PRÓXIMO →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: Altura, Peso, Clube -->
+  <div id="step3" class="step-card" style="display:none">
+    <span class="step-emoji">⚽</span>
+    <div class="step-title">Dados do craque</div>
+    <p class="step-sub">Aparecem na parte de baixo da figurinha</p>
+    <label class="field-label">Altura (cm)</label>
+    <input class="field-input" id="inputAltura" type="number" placeholder="Ex: 122"/>
+    <label class="field-label">Peso (kg)</label>
+    <input class="field-input" id="inputPeso" type="number" placeholder="Ex: 24"/>
+    <label class="field-label">Clube / Escola</label>
+    <input class="field-input" id="inputClube" type="text" placeholder="Ex: Clube Estrelinha FC"/>
+    <div class="nav-row">
+      <button class="btn-back" onclick="goStep(2)">VOLTAR</button>
+      <button class="btn-next" onclick="goStep(4)">PRÓXIMO →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: Revisão -->
+  <div id="step4" class="step-card" style="display:none">
+    <span class="step-emoji">⚠️</span>
+    <div class="step-title">Confira seus dados</div>
+    <p class="step-sub">A figurinha será gerada em breve. Revise com atenção.</p>
+    <div class="warning-msg">Não fazemos alterações após a aprovação e pagamento.</div>
+    <p style="font-size:12px;font-weight:700;color:#555;text-align:center;margin-bottom:10px">VERIFIQUE SE O ROSTO ESTÁ PRÓXIMO</p>
+    <img id="reviewPhoto" class="review-photo" src="" alt=""/>
+    <table class="review-table" id="reviewTable"></table>
+    <button class="btn-next" style="width:100%;padding:16px;font-size:16px" onclick="startGeneration()">ENTENDI, GERAR FIGURINHA ⚽</button>
+    <br/><br/>
+    <button class="btn-back" style="width:100%" onclick="goStep(3)">CORRIGIR DADOS</button>
+  </div>
+
+  <div class="dots" id="stepDots">
+    <div class="dot active" id="dot1"></div>
+    <div class="dot" id="dot2"></div>
+    <div class="dot" id="dot3"></div>
+    <div class="dot" id="dot4"></div>
+  </div>
+</section>
+
+<!-- LOADING / GERANDO -->
+<section id="loadingScreen">
+  <div class="loading-card">
+    <div class="loading-title">Gerando sua figurinha</div>
+    <div class="loading-sub">Não saia dessa tela, leva até 2 minutos.</div>
+    <img class="loading-img" src="https://placehold.co/260x180/0B7A3E/white?text=⚽+COPA+2026" alt=""/>
+    <p class="loading-promo">Adquira sua figurinha HOJE e concorra a<span>MIL REAIS</span></p>
+    <p class="loading-date">no dia 14/07/2026 – Final da Copa</p>
+    <div class="progress-wrap">
+      <span id="countdownLabel">60s</span>
+      <span id="pctLabel">0%</span>
+    </div>
+    <div class="progress-outer"><div class="progress-inner" id="loadBar" style="width:0%"></div></div>
+  </div>
+</section>
+
+<!-- RESULTADO -->
+<section id="resultScreen">
+  <div class="figurinha-wrap">
+    <img id="resultImg" class="figurinha-img" src="" alt="Sua figurinha"/>
+    <div class="watermark-overlay">
+      <svg viewBox="0 0 240 340" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="wm" x="0" y="0" width="80" height="60" patternUnits="userSpaceOnUse" patternTransform="rotate(-35)">
+            <text x="0" y="20" font-size="11" fill="white" font-family="sans-serif" font-weight="bold" opacity="0.7">PREVIEW</text>
+          </pattern>
+        </defs>
+        <rect width="240" height="340" fill="url(#wm)"/>
+      </svg>
+    </div>
+  </div>
+  <div class="gol-text">GOOLL!</div>
+  <div class="ready-text">Sua figurinha está pronta!</div>
+  <p class="pay-info">Receba o arquivo digital para impressão sem marca d'água. <strong>Acesso liberado na hora</strong> após o pagamento.</p>
+  <div class="price-big">R$12,90</div>
+  <button class="btn-main" style="max-width:380px" onclick="redirectToPayment()">RECEBER MINHA FIGURINHA</button>
+  <div class="access-note"><span>✅ ACESSO LIBERADO NA HORA</span><br/>É só voltar aqui em <strong>Minha Área</strong> após o pagamento.</div>
+</section>
+
+<script>
+// ─── STATE ───────────────────────────────────
+let photoFile = null;
+let photoDataURL = null;
+let generatedImgURL = null;
+let userData = {};
+
+// ─── INIT DATE SELECTS ────────────────────────
+(function(){
+  const dias = document.getElementById('selDia');
+  const meses = document.getElementById('selMes');
+  const anos  = document.getElementById('selAno');
+  for(let d=1;d<=31;d++){const o=document.createElement('option');o.value=d;o.textContent=String(d).padStart(2,'0');dias.appendChild(o)}
+  const mNames=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  mNames.forEach((m,i)=>{const o=document.createElement('option');o.value=i+1;o.textContent=m;meses.appendChild(o)});
+  const cur=new Date().getFullYear();
+  for(let y=cur;y>=1990;y--){const o=document.createElement('option');o.value=y;o.textContent=y;anos.appendChild(o)}
+})();
+
+// ─── NAV ─────────────────────────────────────
+function startForm(){
+  document.getElementById('landing').style.display='none';
+  const fw=document.getElementById('formWrap');
+  fw.style.display='flex';
+  fw.style.flexDirection='column';
+}
+function goLanding(){
+  document.getElementById('formWrap').style.display='none';
+  document.getElementById('landing').style.display='flex';
+}
+
+function goStep(n){
+  if(n===2 && !validateStep1()) return;
+  if(n===3 && !validateStep2()) return;
+  if(n===4 && !validateStep3()) return;
+  if(n===4) fillReview();
+  for(let i=1;i<=4;i++){
+    document.getElementById('step'+i).style.display = i===n ? 'block':'none';
+    document.getElementById('dot'+i).classList.toggle('active',i<=n);
+  }
+  const pct = n===1?25:n===2?50:n===3?75:100;
+  document.getElementById('progressFill').style.width=pct+'%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ─── VALIDATION ──────────────────────────────
+function validateStep1(){
+  if(!document.getElementById('inputNome').value.trim()){alert('Digite o nome do craque!');return false}
+  if(!photoFile){alert('Envie uma foto do rosto!');return false}
+  return true;
+}
+function validateStep2(){
+  if(!document.getElementById('selDia').value){alert('Selecione o dia!');return false}
+  if(!document.getElementById('selMes').value){alert('Selecione o mês!');return false}
+  if(!document.getElementById('selAno').value){alert('Selecione o ano!');return false}
+  const e=document.getElementById('inputEmail').value.trim();
+  if(!e||!e.includes('@')){alert('Digite um e-mail válido!');return false}
+  return true;
+}
+function validateStep3(){
+  if(!document.getElementById('inputAltura').value){alert('Digite a altura!');return false}
+  if(!document.getElementById('inputPeso').value){alert('Digite o peso!');return false}
+  if(!document.getElementById('inputClube').value.trim()){alert('Digite o clube ou escola!');return false}
+  return true;
+}
+
+// ─── PHOTO ───────────────────────────────────
+function handlePhoto(input){
+  if(!input.files||!input.files[0]) return;
+  photoFile=input.files[0];
+  const reader=new FileReader();
+  reader.onload=e=>{
+    photoDataURL=e.target.result;
+    const prev=document.getElementById('photoPreview');
+    prev.src=photoDataURL;
+    prev.style.display='block';
+  };
+  reader.readAsDataURL(photoFile);
+}
+
+// ─── REVIEW ──────────────────────────────────
+function fillReview(){
+  userData={
+    nome: document.getElementById('inputNome').value.trim().toUpperCase(),
+    dia:  document.getElementById('selDia').value,
+    mes:  document.getElementById('selMes').value,
+    ano:  document.getElementById('selAno').value,
+    email:document.getElementById('inputEmail').value.trim(),
+    altura:document.getElementById('inputAltura').value,
+    peso:  document.getElementById('inputPeso').value,
+    clube: document.getElementById('inputClube').value.trim().toUpperCase()
+  };
+  document.getElementById('reviewPhoto').src=photoDataURL;
+  const nascDate=`${String(userData.dia).padStart(2,'0')}-${String(userData.mes).padStart(2,'0')}-${userData.ano}`;
+  document.getElementById('reviewTable').innerHTML=`
+    <tr><td>Nome</td><td>${userData.nome}</td></tr>
+    <tr><td>Nascimento</td><td>${nascDate}</td></tr>
+    <tr><td>E-mail</td><td>${userData.email}</td></tr>
+    <tr><td>Altura</td><td>${userData.altura} cm</td></tr>
+    <tr><td>Peso</td><td>${userData.peso} kg</td></tr>
+    <tr><td>Clube</td><td>${userData.clube}</td></tr>
+  `;
+}
+
+// ─── GENERATION ──────────────────────────────
+function startGeneration(){
+  document.getElementById('formWrap').style.display='none';
+  const ls=document.getElementById('loadingScreen');
+  ls.style.display='flex';
+  ls.style.flexDirection='column';
+  animateLoading();
+  generateFigurinha();
+}
+
+function animateLoading(){
+  let sec=120, pct=0;
+  const bar=document.getElementById('loadBar');
+  const cl=document.getElementById('countdownLabel');
+  const pl=document.getElementById('pctLabel');
+  const iv=setInterval(()=>{
+    sec--; pct=Math.min(95, Math.round((120-sec)/120*95));
+    bar.style.width=pct+'%';
+    cl.textContent=sec+'s';
+    pl.textContent=pct+'%';
+    if(sec<=0) clearInterval(iv);
+  },1000);
+}
+
+async function generateFigurinha(){
+  try{
+    // Call backend API to generate figurinha
+    const formData=new FormData();
+    formData.append('foto', photoFile);
+    formData.append('dados', JSON.stringify(userData));
+
+    const res = await fetch('/api/gerar', {method:'POST', body:formData});
+    const data = await res.json();
+
+    if(data.imageUrl){
+      showResult(data.imageUrl);
+    } else {
+      showResult(photoDataURL); // fallback
+    }
+  } catch(e){
+    console.error(e);
+    showResult(photoDataURL); // fallback para demo
+  }
+}
+
+function showResult(imgUrl){
+  generatedImgURL=imgUrl;
+  document.getElementById('loadingScreen').style.display='none';
+  const rs=document.getElementById('resultScreen');
+  rs.style.display='flex';
+  rs.style.flexDirection='column';
+  rs.style.alignItems='center';
+  document.getElementById('resultImg').src=imgUrl;
+  document.getElementById('loadBar').style.width='100%';
+  document.getElementById('pctLabel').textContent='100%';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function redirectToPayment(){
+  // Salvar dados na sessão antes de ir pro pagamento
+  sessionStorage.setItem('userData', JSON.stringify(userData));
+  sessionStorage.setItem('generatedImg', generatedImgURL);
+  // Redirecionar para checkout do Mercado Pago (você configura a URL aqui)
+  window.location.href = '/api/checkout?email='+encodeURIComponent(userData.email)+'&nome='+encodeURIComponent(userData.nome);
+}
+</script>
+</body>
+</html>
