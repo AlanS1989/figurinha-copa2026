@@ -15,12 +15,5 @@
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/$1" },
     { "src": "/(.*)", "dest": "/index.html" }
-  ],
-  "env": {
-    "OPENAI_API_KEY": "@openai-api-key",
-    "MP_ACCESS_TOKEN": "@mp-access-token",
-    "RESEND_API_KEY": "@resend-api-key",
-    "NEXT_PUBLIC_BASE_URL": "@base-url",
-    "BLOB_READ_WRITE_TOKEN": "@blob-token"
-  }
+  ]
 }
