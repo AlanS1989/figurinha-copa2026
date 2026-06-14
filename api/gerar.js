@@ -37,7 +37,6 @@ async function uploadFoto(buffer, pedidoId) {
 }
 
 function encText(str) {
-  // Cloudinary text overlay: espaços viram _, caracteres especiais codificados
   return str
     .replace(/,/g, '%2C')
     .replace(/\//g, '%2F')
@@ -55,40 +54,26 @@ export default async function handler(req, res) {
     const fotoBuffer = fs.readFileSync(fotoFile.filepath);
     const pedidoId = Date.now().toString();
 
-    // Upload foto do cliente
     const fotoUpload = await uploadFoto(fotoBuffer, pedidoId);
     if (!fotoUpload.public_id) throw new Error('Erro upload: ' + JSON.stringify(fotoUpload));
 
     const dia = String(userData.dia).padStart(2,'0');
     const mes = String(userData.mes).padStart(2,'0');
     const nascDate = `${dia}-${mes}-${userData.ano}`;
-
     const fotoId     = fotoUpload.public_id.replace(/\//g, ':');
     const templateId = 'figurinha_template:template_brasil';
-
     const nome   = encText(userData.nome.toUpperCase());
     const linha2 = encText(`${nascDate} / ${userData.altura}m / ${userData.peso}kg`);
     const clube  = encText(userData.clube.toUpperCase());
 
-    // Composição:
-    // Base = template (1080x1456)
-    // Overlay 1 = foto do cliente recortada no rosto, posicionada no espaço do boneco
-    // Overlay 2/3/4 = textos na barra inferior
-    // Posição do rosto no template: centro aproximado x=-60 (esquerda do centro), y=-280 (acima do centro)
-    const figurinhaUrl = [
-      `https://res.cloudinary.com/${CLOUD_NAME}/image/upload`,
-      // Foto como overlay: detecta rosto automaticamente, posiciona no boneco
-      `l_${fotoId},w_480,h_530,c_fill,g_face,x_-55,y_-290/fl_layer_apply`,
-      // Nome em branco
-      `l_text:Arial_Bold_48:${nome},co_white,g_south,y_185/fl_layer_apply`,
-      // Data / altura / peso
-      `l_text:Arial_36:${linha2},co_white,g_south,y_135/fl_layer_apply`,
-      // Clube em amarelo
-      `l_text:Arial_Bold_34:${clube},co_rgb:FFD700,g_south,y_85/fl_layer_apply`,
-      // Base: template
-      `w_1080,h_1456`,
-      templateId
-    ].join('/');
+    const figurinhaUrl = 
+      `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/` +
+      `l_${fotoId},w_480,h_530,c_fill,g_face,x_-55,y_-290/fl_layer_apply/` +
+      `l_text:Arial_Bold_48:${nome},co_white,g_south,y_185/fl_layer_apply/` +
+      `l_text:Arial_36:${linha2},co_white,g_south,y_135/fl_layer_apply/` +
+      `l_text:Arial_Bold_34:${clube},co_rgb:FFD700,g_south,y_85/fl_layer_apply/` +
+      `w_1080,h_1456/` +
+      `${templateId}`;
 
     return res.status(200).json({ imageUrl: figurinhaUrl, pedidoId });
 
