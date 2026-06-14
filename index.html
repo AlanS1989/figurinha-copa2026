@@ -253,7 +253,7 @@ let userData = {};
   const mNames=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
   mNames.forEach((m,i)=>{const o=document.createElement('option');o.value=i+1;o.textContent=m;meses.appendChild(o)});
   const cur=new Date().getFullYear();
-  for(let y=cur;y>=1990;y--){const o=document.createElement('option');o.value=y;o.textContent=y;anos.appendChild(o)}
+  for(let y=cur;y>=1940;y--){const o=document.createElement('option');o.value=y;o.textContent=y;anos.appendChild(o)}
 })();
 
 // ─── NAV ─────────────────────────────────────
