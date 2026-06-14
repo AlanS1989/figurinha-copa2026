@@ -1,25 +1,48 @@
-import { put } from '@vercel/blob';
-import sharp from 'sharp';
-
 export const config = {
   api: { bodyParser: false }
 };
 
+const CLOUD_NAME  = process.env.CLOUDINARY_CLOUD_NAME;
+const API_KEY     = process.env.CLOUDINARY_API_KEY;
+const API_SECRET  = process.env.CLOUDINARY_API_SECRET;
+const TEMPLATE_ID = 'figurinha_template:template_brasil';
+
+async function cloudinarySign(params) {
+  const crypto = await import('crypto');
+  const sorted = Object.keys(params).sort()
+    .map(k => `${k}=${params[k]}`).join('&');
+  return crypto.createHmac('sha256', API_SECRET).update(sorted).digest('hex');
+}
+
+async function uploadToCloudinary(buffer, publicId, folder) {
+  const timestamp = Math.floor(Date.now() / 1000).toString();
+  const signature = await cloudinarySign({ folder, public_id: publicId, timestamp });
+  const form = new FormData();
+  form.append('file', new Blob([buffer]));
+  form.append('public_id', publicId);
+  form.append('folder', folder);
+  form.append('timestamp', timestamp);
+  form.append('api_key', API_KEY);
+  form.append('signature', signature);
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+    method: 'POST', body: form
+  });
+  return res.json();
+}
+
 async function parseForm(req) {
   const { IncomingForm } = await import('formidable');
   return new Promise((resolve, reject) => {
-    const form = new IncomingForm({ keepExtensions: true });
+    const form = new IncomingForm({ keepExtensions: true, maxFileSize: 10 * 1024 * 1024 });
     form.parse(req, (err, fields, files) => {
-      if (err) reject(err);
-      else resolve({ fields, files });
+      if (err) reject(err); else resolve({ fields, files });
     });
   });
 }
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
   try {
     const { fields, files } = await parseForm(req);
     const userData = JSON.parse(Array.isArray(fields.dados) ? fields.dados[0] : fields.dados);
@@ -27,19 +50,28 @@ export default async function handler(req, res) {
 
     const fs = await import('fs');
     const fotoBuffer = fs.readFileSync(fotoFile.filepath);
-
-    const fotoResized = await sharp(fotoBuffer)
-      .resize(375, 525, { fit: 'cover', position: 'top' })
-      .jpeg({ quality: 90 })
-      .toBuffer();
-
     const pedidoId = Date.now().toString();
-    const blob = await put(`figurinhas/${pedidoId}.jpg`, fotoResized, {
-      access: 'public',
-      contentType: 'image/jpeg'
-    });
 
-    return res.status(200).json({ imageUrl: blob.url, pedidoId });
+    const fotoUpload = await uploadToCloudinary(fotoBuffer, `foto_${pedidoId}`, 'fotos_clientes');
+    if (!fotoUpload.public_id) throw new Error('Erro upload foto: ' + JSON.stringify(fotoUpload));
+
+    const nascDate = `${String(userData.dia).padStart(2,'0')}-${String(userData.mes).padStart(2,'0')}-${userData.ano}`;
+    const fotoId = fotoUpload.public_id.replace(/\//g, ':');
+    const nome   = encodeURIComponent(userData.nome.toUpperCase());
+    const linha2 = encodeURIComponent(`${nascDate}  |  ${userData.altura}m  |  ${userData.peso}kg`);
+    const clube  = encodeURIComponent(userData.clube.toUpperCase());
+
+    const figurinhaUrl =
+      `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/` +
+      `l_${fotoId},w_440,h_480,c_fill,g_face,x_-50,y_-240/fl_layer_apply/` +
+      `l_${TEMPLATE_ID},w_1080,h_1456,c_fill/fl_layer_apply/` +
+      `l_text:Arial_Bold_52:${nome},co_white,g_south,y_198/fl_layer_apply/` +
+      `l_text:Arial_36:${linha2},co_white,g_south,y_148/fl_layer_apply/` +
+      `l_text:Arial_Bold_34:${clube},co_rgb:FFD700,g_south,y_100/fl_layer_apply/` +
+      `w_1080,h_1456,c_fill/${fotoId}`;
+
+    return res.status(200).json({ imageUrl: figurinhaUrl, pedidoId });
+
   } catch (error) {
     console.error('Erro:', error);
     return res.status(500).json({ error: error.message });
