@@ -1,13 +1,11 @@
 {
   "name": "figurinha-copa2026",
   "version": "1.0.0",
-  "description": "Plataforma de figurinhas personalizadas Copa 2026",
   "dependencies": {
     "formidable": "^3.5.1",
     "resend": "^3.2.0",
     "sharp": "^0.33.4",
-    "@vercel/blob": "^0.23.4",
-    "canvas": "^2.11.2"
+    "@vercel/blob": "^0.23.4"
   },
   "engines": {
     "node": ">=18.0.0"
