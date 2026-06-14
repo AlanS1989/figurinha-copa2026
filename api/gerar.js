@@ -2,33 +2,9 @@ export const config = {
   api: { bodyParser: false }
 };
 
-const CLOUD_NAME  = process.env.CLOUDINARY_CLOUD_NAME;
-const API_KEY     = process.env.CLOUDINARY_API_KEY;
-const API_SECRET  = process.env.CLOUDINARY_API_SECRET;
-const TEMPLATE_ID = 'figurinha_template:template_brasil';
-
-async function cloudinarySign(params) {
-  const crypto = await import('crypto');
-  const sorted = Object.keys(params).sort()
-    .map(k => `${k}=${params[k]}`).join('&');
-  return crypto.createHmac('sha256', API_SECRET).update(sorted).digest('hex');
-}
-
-async function uploadToCloudinary(buffer, publicId, folder) {
-  const timestamp = Math.floor(Date.now() / 1000).toString();
-  const signature = await cloudinarySign({ folder, public_id: publicId, timestamp });
-  const form = new FormData();
-  form.append('file', new Blob([buffer]));
-  form.append('public_id', publicId);
-  form.append('folder', folder);
-  form.append('timestamp', timestamp);
-  form.append('api_key', API_KEY);
-  form.append('signature', signature);
-  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
-    method: 'POST', body: form
-  });
-  return res.json();
-}
+const CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME;
+const API_KEY    = process.env.CLOUDINARY_API_KEY;
+const API_SECRET = process.env.CLOUDINARY_API_SECRET;
 
 async function parseForm(req) {
   const { IncomingForm } = await import('formidable');
@@ -40,35 +16,79 @@ async function parseForm(req) {
   });
 }
 
+async function uploadFoto(buffer, pedidoId) {
+  const crypto = await import('crypto');
+  const timestamp = Math.floor(Date.now() / 1000).toString();
+  const folder = 'fotos_clientes';
+  const public_id = `foto_${pedidoId}`;
+  const str = `folder=${folder}&public_id=${public_id}&timestamp=${timestamp}${API_SECRET}`;
+  const signature = crypto.createHash('sha1').update(str).digest('hex');
+  const form = new FormData();
+  form.append('file', new Blob([buffer]));
+  form.append('public_id', public_id);
+  form.append('folder', folder);
+  form.append('timestamp', timestamp);
+  form.append('api_key', API_KEY);
+  form.append('signature', signature);
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+    method: 'POST', body: form
+  });
+  return res.json();
+}
+
+function encText(str) {
+  // Cloudinary text overlay: espaços viram _, caracteres especiais codificados
+  return str
+    .replace(/,/g, '%2C')
+    .replace(/\//g, '%2F')
+    .replace(/\|/g, '%7C')
+    .replace(/ /g, '_');
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
-
   try {
     const { fields, files } = await parseForm(req);
     const userData = JSON.parse(Array.isArray(fields.dados) ? fields.dados[0] : fields.dados);
     const fotoFile = Array.isArray(files.foto) ? files.foto[0] : files.foto;
-
     const fs = await import('fs');
     const fotoBuffer = fs.readFileSync(fotoFile.filepath);
     const pedidoId = Date.now().toString();
 
-    const fotoUpload = await uploadToCloudinary(fotoBuffer, `foto_${pedidoId}`, 'fotos_clientes');
-    if (!fotoUpload.public_id) throw new Error('Erro upload foto: ' + JSON.stringify(fotoUpload));
+    // Upload foto do cliente
+    const fotoUpload = await uploadFoto(fotoBuffer, pedidoId);
+    if (!fotoUpload.public_id) throw new Error('Erro upload: ' + JSON.stringify(fotoUpload));
 
-    const nascDate = `${String(userData.dia).padStart(2,'0')}-${String(userData.mes).padStart(2,'0')}-${userData.ano}`;
-    const fotoId = fotoUpload.public_id.replace(/\//g, ':');
-    const nome   = encodeURIComponent(userData.nome.toUpperCase());
-    const linha2 = encodeURIComponent(`${nascDate}  |  ${userData.altura}m  |  ${userData.peso}kg`);
-    const clube  = encodeURIComponent(userData.clube.toUpperCase());
+    const dia = String(userData.dia).padStart(2,'0');
+    const mes = String(userData.mes).padStart(2,'0');
+    const nascDate = `${dia}-${mes}-${userData.ano}`;
 
-    const figurinhaUrl =
-      `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/` +
-      `l_${fotoId},w_440,h_480,c_fill,g_face,x_-50,y_-240/fl_layer_apply/` +
-      `l_${TEMPLATE_ID},w_1080,h_1456,c_fill/fl_layer_apply/` +
-      `l_text:Arial_Bold_52:${nome},co_white,g_south,y_198/fl_layer_apply/` +
-      `l_text:Arial_36:${linha2},co_white,g_south,y_148/fl_layer_apply/` +
-      `l_text:Arial_Bold_34:${clube},co_rgb:FFD700,g_south,y_100/fl_layer_apply/` +
-      `w_1080,h_1456,c_fill/${fotoId}`;
+    const fotoId     = fotoUpload.public_id.replace(/\//g, ':');
+    const templateId = 'figurinha_template:template_brasil';
+
+    const nome   = encText(userData.nome.toUpperCase());
+    const linha2 = encText(`${nascDate} / ${userData.altura}m / ${userData.peso}kg`);
+    const clube  = encText(userData.clube.toUpperCase());
+
+    // Composição:
+    // Base = template (1080x1456)
+    // Overlay 1 = foto do cliente recortada no rosto, posicionada no espaço do boneco
+    // Overlay 2/3/4 = textos na barra inferior
+    // Posição do rosto no template: centro aproximado x=-60 (esquerda do centro), y=-280 (acima do centro)
+    const figurinhaUrl = [
+      `https://res.cloudinary.com/${CLOUD_NAME}/image/upload`,
+      // Foto como overlay: detecta rosto automaticamente, posiciona no boneco
+      `l_${fotoId},w_480,h_530,c_fill,g_face,x_-55,y_-290/fl_layer_apply`,
+      // Nome em branco
+      `l_text:Arial_Bold_48:${nome},co_white,g_south,y_185/fl_layer_apply`,
+      // Data / altura / peso
+      `l_text:Arial_36:${linha2},co_white,g_south,y_135/fl_layer_apply`,
+      // Clube em amarelo
+      `l_text:Arial_Bold_34:${clube},co_rgb:FFD700,g_south,y_85/fl_layer_apply`,
+      // Base: template
+      `w_1080,h_1456`,
+      templateId
+    ].join('/');
 
     return res.status(200).json({ imageUrl: figurinhaUrl, pedidoId });
 
