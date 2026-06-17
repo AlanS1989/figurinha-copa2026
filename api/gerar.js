@@ -61,7 +61,7 @@ export default async function handler(req, res) {
     const mes = String(userData.mes).padStart(2,'0');
     const nascDate = `${dia}-${mes}-${userData.ano}`;
 
-    const fotoId     = fotoUpload.public_id.replace(/\//g, ':').replace(/ /g, '_');
+    const fotoId = fotoUpload.public_id.replace(/ /g, '_');
     const templateId = 'v1781443612/template_brasil_uedun4';
 
     const nome   = encText(userData.nome.toUpperCase());
