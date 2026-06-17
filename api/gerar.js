@@ -62,7 +62,7 @@ export default async function handler(req, res) {
     const nascDate = `${dia}-${mes}-${userData.ano}`;
 
     const fotoId     = fotoUpload.public_id.replace(/\//g, ':').replace(/ /g, '_');
-    const templateId = 'figurinha_template/template_brasil';
+    const templateId = 'figurinha_template/template_brasil_uedun4';
 
     const nome   = encText(userData.nome.toUpperCase());
     const linha2 = encText(`${nascDate} / ${userData.altura}m / ${userData.peso}kg`);
