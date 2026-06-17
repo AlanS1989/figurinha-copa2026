@@ -61,20 +61,19 @@ export default async function handler(req, res) {
     const mes = String(userData.mes).padStart(2,'0');
     const nascDate = `${dia}-${mes}-${userData.ano}`;
 
-    const fotoId = fotoUpload.public_id.replace(/ /g, '_');
-    const templateId = 'v1781443612/template_brasil_uedun4';
-
+    const fotoId = fotoUpload.public_id.replace(/\//g, ':');
     const nome   = encText(userData.nome.toUpperCase());
     const linha2 = encText(`${nascDate} / ${userData.altura}m / ${userData.peso}kg`);
     const clube  = encText(userData.clube.toUpperCase());
 
-    const base     = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload`;
-    const overlay1 = `l_${fotoId},w_480,h_530,c_fill,g_face,x_-55,y_-290`;
-    const text1    = `l_text:Arial_Bold_48:${nome},co_white,g_south,y_185`;
-    const text2    = `l_text:Arial_36:${linha2},co_white,g_south,y_135`;
-    const text3    = `l_text:Arial_Bold_34:${clube},co_rgb:FFD700,g_south,y_85`;
-
-    const figurinhaUrl = `${base}/${overlay1}/fl_layer_apply/${text1}/fl_layer_apply/${text2}/fl_layer_apply/${text3}/fl_layer_apply/w_1080,h_1456/${templateId}`;
+    const figurinhaUrl = 
+      `https://res.cloudinary.com/${CLOUD_NAME}/image/upload` +
+      `/l_${fotoId},w_480,h_530,c_fill,g_face,x_-55,y_-290,fl_layer_apply` +
+      `/l_text:Arial_Bold_48:${nome},co_white,g_south,y_185,fl_layer_apply` +
+      `/l_text:Arial_36:${linha2},co_white,g_south,y_135,fl_layer_apply` +
+      `/l_text:Arial_Bold_34:${clube},co_rgb:FFD700,g_south,y_85,fl_layer_apply` +
+      `/w_1080,h_1456` +
+      `/v1781443612/template_brasil_uedun4.jpg`;
 
     return res.status(200).json({ imageUrl: figurinhaUrl, pedidoId });
 
