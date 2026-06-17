@@ -68,10 +68,14 @@ export default async function handler(req, res) {
 
     const figurinhaUrl = 
       `https://res.cloudinary.com/${CLOUD_NAME}/image/upload` +
-      `/l_${fotoId},w_480,h_530,c_fill,g_face,x_-55,y_-290,fl_layer_apply` +
-      `/l_text:Arial_Bold_48:${nome},co_white,g_south,y_185,fl_layer_apply` +
-      `/l_text:Arial_36:${linha2},co_white,g_south,y_135,fl_layer_apply` +
-      `/l_text:Arial_Bold_34:${clube},co_rgb:FFD700,g_south,y_85,fl_layer_apply` +
+      `/l_${fotoId},w_440,h_480,c_fill,g_face,x_-50,y_-300` +
+      `/fl_layer_apply` +
+      `/l_text:Arial_Bold_48:${nome},co_white,g_south,y_185` +
+      `/fl_layer_apply` +
+      `/l_text:Arial_36:${linha2},co_white,g_south,y_135` +
+      `/fl_layer_apply` +
+      `/l_text:Arial_Bold_34:${clube},co_rgb:FFD700,g_south,y_85` +
+      `/fl_layer_apply` +
       `/w_1080,h_1456` +
       `/v1781443612/template_brasil_uedun4.jpg`;
 
