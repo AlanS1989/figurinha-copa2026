@@ -1,14 +1,9 @@
-// api/checkout.js - Cria preferência de pagamento no Mercado Pago
-
+// api/checkout.js - Gateway de Pagamento
 export default async function handler(req, res) {
-  const { email, nome, pedidoId } = req.query;
-
-  if (!email) {
-    return res.status(400).json({ error: 'Email obrigatório' });
-  }
+  const { email, nome } = req.query;
+  if (!email) return res.status(400).json({ error: 'Email é obrigatório' });
 
   try {
-    // Criar preferência no Mercado Pago
     const mpResponse = await fetch('https://api.mercadopago.com/checkout/preferences', {
       method: 'POST',
       headers: {
@@ -17,39 +12,25 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         items: [{
-          title: `Figurinha Copa 2026 - ${nome || 'Personalizada'}`,
-          description: 'Figurinha personalizada Copa do Mundo 2026 com foto e dados',
+          title: `Figurinha Oficial Copa 2026 - ${nome || 'Craque'}`,
           unit_price: 12.90,
           quantity: 1,
           currency_id: 'BRL'
         }],
-        payer: {
-          email: email
-        },
+        payer: { email: email },
         back_urls: {
-          success: `${process.env.NEXT_PUBLIC_BASE_URL}/sucesso?email=${encodeURIComponent(email)}`,
-          failure: `${process.env.NEXT_PUBLIC_BASE_URL}/?erro=pagamento`,
-          pending: `${process.env.NEXT_PUBLIC_BASE_URL}/aguardando?email=${encodeURIComponent(email)}`
+          success: `${process.env.NEXT_PUBLIC_BASE_URL}/?sucesso=true`,
+          failure: `${process.env.NEXT_PUBLIC_BASE_URL}/?erro=true`
         },
         auto_return: 'approved',
-        notification_url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/webhook`,
-        external_reference: `${email}|${pedidoId || Date.now()}`,
-        statement_descriptor: 'FIGURINHA COPA',
-        expires: false
+        notification_url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/webhook`
       })
     });
 
     const mpData = await mpResponse.json();
-
-    if (mpData.init_point) {
-      // Redirecionar direto para o checkout do Mercado Pago
-      return res.redirect(302, mpData.init_point);
-    } else {
-      throw new Error('Erro ao criar preferência: ' + JSON.stringify(mpData));
-    }
-
+    if (mpData.init_point) return res.redirect(302, mpData.init_point);
+    else throw new Error('Erro MP');
   } catch (error) {
-    console.error('Erro checkout:', error);
-    return res.status(500).json({ error: 'Erro ao criar pagamento' });
+    return res.status(500).json({ error: 'Erro ao gerar Pix' });
   }
 }
