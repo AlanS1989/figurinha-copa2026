@@ -4,7 +4,7 @@ export const config = { api: { bodyParser: false } };
 const CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME;
 const API_KEY    = process.env.CLOUDINARY_API_KEY;
 const API_SECRET = process.env.CLOUDINARY_API_SECRET;
-const TEMPLATE_ID = 'figurinha_template:template_brasil'; // ID do Molde no Cloudinary
+const TEMPLATE_ID = 'template_brasil_uedun4'; // ID do Molde no Cloudinary
 
 function encText(str) {
   return encodeURIComponent(str)
