@@ -32,11 +32,43 @@ h1{font-family:'Russo One',sans-serif;font-size:clamp(24px,6.5vw,34px);line-heig
 .btn-main{background:#1B3FA0;color:#fff;font-family:'Russo One',sans-serif;font-size:20px;letter-spacing:1px;border:none;border-radius:16px;padding:20px 0;width:100%;cursor:pointer;box-shadow:0 8px 24px rgba(27,63,160,0.35);text-transform:uppercase}
 .btn-main:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(27,63,160,0.45)}
 
-/* FORMULÁRIO DE ETAPAS */
-#formWrap{display:none;min-height:100vh;background:#FCD116;padding:20px 16px 40px;align-items:flex-start;justify-content:center}
-.progress-bar-wrap{width:100%;max-width:420px;height:6px;background:rgba(27,63,160,.2);border-radius:3px;margin:0 auto 20px;overflow:hidden}
-.progress-bar-fill{height:100%;background:#1B3FA0;border-radius:3px;transition:width .4s;width:33.3%}
-.step-card{background:#fff;border-radius:24px;padding:28px 24px;max-width:420px;width:100%;margin:0 auto;box-shadow:0 8px 32px rgba(0,0,0,0.12)}
+/* FORMULÁRIO DE ETAPAS - CENTRALIZAÇÃO ABSOLUTA AJUSTADA */
+#formWrap {
+  display: none;
+  min-height: 100vh;
+  background: #FCD116;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-container-central {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.progress-bar-wrap {
+  width: 100%;
+  height: 6px;
+  background: rgba(27, 63, 160, 0.2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: #1B3FA0;
+  border-radius: 3px;
+  transition: width 0.4s;
+  width: 33.3%;
+}
+
+.step-card{background:#fff;border-radius:24px;padding:28px 24px;width:100%;box-shadow:0 12px 40px rgba(0,0,0,0.15)}
 .step-emoji{font-size:42px;display:block;text-align:center;margin-bottom:12px}
 .step-title{font-family:'Russo One',sans-serif;color:#1B3FA0;font-size:22px;text-align:center;text-transform:uppercase;margin-bottom:6px}
 .step-sub{font-size:14px;color:#555;text-align:center;margin-bottom:24px;font-style:italic}
@@ -92,65 +124,67 @@ h1{font-family:'Russo One',sans-serif;font-size:clamp(24px,6.5vw,34px);line-heig
   </div>
 </section>
 
-<section id="formWrap">
-  <div style="max-width:420px;width:100%;margin:0 auto">
+<section id="formWrap" style="display:none;">
+  <div class="form-container-central">
+    
     <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressFill"></div></div>
-  </div>
 
-  <div id="step1" class="step-card">
-    <span class="step-emoji">✍️</span>
-    <div class="step-title">Qual o nome do craque?</div>
-    <p class="step-sub">O nome que vai aparecer na figurinha</p>
-    <label class="field-label">Nome e sobrenome</label>
-    <input class="field-input" id="inputNome" type="text" placeholder="Ex: Alan Silva"/>
-    <label class="field-label">Foto do craque</label>
-    <div class="upload-zone">
-      <label class="upload-box">
-        <span class="uicon">🖼️</span>
-        <span>Galeria</span>
-        <input type="file" id="inputFoto" accept="image/*" onchange="handlePhoto(this)"/>
-      </label>
-      <label class="upload-box">
-        <span class="uicon">📸</span>
-        <span>Câmera</span>
-        <input type="file" id="inputFotoCam" accept="image/*" capture="user" onchange="handlePhoto(this)"/>
-      </label>
+    <div id="step1" class="step-card">
+      <span class="step-emoji">✍️</span>
+      <div class="step-title">Qual o nome do craque?</div>
+      <p class="step-sub">O nome que vai aparecer na figurinha</p>
+      <label class="field-label">Nome e sobrenome</label>
+      <input class="field-input" id="inputNome" type="text" placeholder="Digite o nome completo aqui"/>
+      <label class="field-label">Foto do craque</label>
+      <div class="upload-zone">
+        <label class="upload-box">
+          <span class="uicon">🖼️</span>
+          <span>Galeria</span>
+          <input type="file" id="inputFoto" accept="image/*" onchange="handlePhoto(this)"/>
+        </label>
+        <label class="upload-box">
+          <span class="uicon">📸</span>
+          <span>Câmera</span>
+          <input type="file" id="inputFotoCam" accept="image/*" capture="user" onchange="handlePhoto(this)"/>
+        </label>
+      </div>
+      <img id="photoPreview" style="display:none" class="upload-preview" alt="preview"/>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goLanding()">← Voltar</button>
+        <button class="btn-next" onclick="goStep(2)">Próximo →</button>
+      </div>
     </div>
-    <img id="photoPreview" style="display:none" class="upload-preview" alt="preview"/>
-    <div class="nav-row">
-      <button class="btn-back" onclick="goLanding()">← Voltar</button>
-      <button class="btn-next" onclick="goStep(2)">Próximo →</button>
-    </div>
-  </div>
 
-  <div id="step2" class="step-card" style="display:none">
-    <span class="step-emoji">🎂</span>
-    <div class="step-title">Nascimento e Contato</div>
-    <p class="step-sub">Preencha todos os campos obrigatórios</p>
-    <div class="row3" style="margin-top:12px">
-      <select id="selDia"><option value="">DIA</option></select>
-      <select id="selMes"><option value="">MÊS</option></select>
-      <select id="selAno"><option value="">ANO</option></select>
+    <div id="step2" class="step-card" style="display:none">
+      <span class="step-emoji">🎂</span>
+      <div class="step-title">Nascimento e Contato</div>
+      <p class="step-sub">Preencha todos os campos obrigatórios</p>
+      <div class="row3" style="margin-top:12px">
+        <select id="selDia"><option value="">DIA</option></select>
+        <select id="selMes"><option value="">MÊS</option></select>
+        <select id="selAno"><option value="">ANO</option></select>
+      </div>
+      <label class="field-label">Seu melhor e-mail</label>
+      <input class="field-input" id="inputEmail" type="email" placeholder="exemplo@email.com"/>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goStep(1)">Voltar</button>
+        <button class="btn-next" onclick="goStep(3)">Próximo →</button>
+      </div>
     </div>
-    <label class="field-label">Seu melhor e-mail</label>
-    <input class="field-input" id="inputEmail" type="email" placeholder="exemplo@email.com"/>
-    <div class="nav-row">
-      <button class="btn-back" onclick="goStep(1)">Voltar</button>
-      <button class="btn-next" onclick="goStep(3)">Próximo →</button>
-    </div>
-  </div>
 
-  <div id="step3" class="step-card" style="display:none">
-    <span class="step-emoji">⚽</span>
-    <div class="step-title">Dados de Campo</div>
-    <p class="step-sub">Essas informações aparecerão no rodapé</p>
-    <input class="field-input" id="inputAltura" type="text" placeholder="Altura (Ex: 1,75 m)"/>
-    <input class="field-input" id="inputPeso" type="text" placeholder="Peso (Ex: 75 kg)"/>
-    <input class="field-input" id="inputClube" type="text" placeholder="Clube (Ex: Flamengo)"/>
-    <div class="nav-row">
-      <button class="btn-back" onclick="goStep(2)">Voltar</button>
-      <button class="btn-next" onclick="startGeneration()">Gerar Figurinha ⚽</button>
+    <div id="step3" class="step-card" style="display:none">
+      <span class="step-emoji">⚽</span>
+      <div class="step-title">Dados de Campo</div>
+      <p class="step-sub">Essas informações aparecerão no rodapé</p>
+      <input class="field-input" id="inputAltura" type="text" placeholder="Altura (Ex: 1,75 m)"/>
+      <input class="field-input" id="inputPeso" type="text" placeholder="Peso (Ex: 75 kg)"/>
+      <input class="field-input" id="inputClube" type="text" placeholder="Digite o clube ou escola aqui"/>
+      <div class="nav-row">
+        <button class="btn-back" onclick="goStep(2)">Voltar</button>
+        <button class="btn-next" onclick="startGeneration()">Gerar Figurinha ⚽</button>
+      </div>
     </div>
+
   </div>
 </section>
 
@@ -216,6 +250,7 @@ function validateStep1(){
   return true;
 }
 
+// Validação de Nascimento e E-mail
 function validateStep2(){
   const dia = document.getElementById('selDia').value;
   const mes = document.getElementById('selMes').value;
@@ -227,6 +262,7 @@ function validateStep2(){
   return true;
 }
 
+// Validação de Dados Físicos
 function validateStep3(){
   const altura = document.getElementById('inputAltura').value.trim();
   const peso = document.getElementById('inputPeso').value.trim();
