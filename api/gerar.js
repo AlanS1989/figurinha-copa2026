@@ -1,10 +1,10 @@
-// api/gerar.js - Motor Cloudinary Oficial Copa 2026
+// api/gerar.js - Motor Cloudinary Atualizado e Corrigido
 export const config = { api: { bodyParser: false } };
 
 const CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME;
 const API_KEY    = process.env.CLOUDINARY_API_KEY;
 const API_SECRET = process.env.CLOUDINARY_API_SECRET;
-const TEMPLATE_ID = 'template_brasil_uedun4'; // ID do Molde no Cloudinary
+const TEMPLATE_ID = 'template_brasil_uedun4'; // ID do seu molde atualizado
 
 function encText(str) {
   return encodeURIComponent(str)
@@ -62,25 +62,25 @@ export default async function handler(req, res) {
 
     const dia = String(userData.dia).padStart(2,'0');
     const mes = String(userData.mes).padStart(2,'0');
-    const nascDate = `${dia}-${mes}-${userData.ano}`;
+    const nascDate = `${dia}/${mes}/${userData.ano}`;
 
     const fotoId = fotoUpload.public_id.replace(/\//g, ':');
     
-    // Tratamento e formatação idênticos à resposta visual
     const nome   = encText(userData.nome.toUpperCase());
-    const linha2 = encText(`${nascDate} | ${userData.altura} | ${userData.peso}`);
+    const linha2 = encText(`${nascDate}  |  ${userData.altura}  |  ${userData.peso}`);
     const clube  = encText(userData.clube.toUpperCase());
 
-    // COMPOSIÇÃO DE CAMADAS DINÂMICAS:
-    // Base = Foto do Usuário (Centralizada no rosto via Inteligência de gravidade do Cloudinary)
-    // Overlays superiores = Molde + Textos Alinhados na base amarela
+    // MONTAGEM DA COMPOSIÇÃO:
+    // Base: Foto do cliente redimensionada e focando no rosto.
+    // Overlay: Aplica o card do brasil com fundo transparente por cima, e depois renderiza os textos.
     const figurinhaUrl = [
       `https://res.cloudinary.com/${CLOUD_NAME}/image/upload`,
-      `w_1080,h_1456,c_fill,g_face,x_-55,y_-290/${fotoId}`,
-      `l_${TEMPLATE_ID},w_1080,h_1456,c_fill/fl_layer_apply`,
-      `l_text:Arial_Bold_48:${nome},co_white,g_south,y_185/fl_layer_apply`,
-      `l_text:Arial_36:${linha2},co_white,g_south,y_135/fl_layer_apply`,
-      `l_text:Arial_Bold_34:${clube},co_rgb:FFD700,g_south,y_85/fl_layer_apply`
+      `w_1080,h_1456,c_fill,g_face,x_-55,y_-290`, // Foca e ajusta o rosto do cliente
+      `l_${TEMPLATE_ID},w_1080,h_1456,c_fill/fl_layer_apply`, // Moldura sobreposta
+      `l_text:Arial_Bold_48:${nome},co_white,g_south,y_185/fl_layer_apply`, // Nome
+      `l_text:Arial_36:${linha2},co_white,g_south,y_135/fl_layer_apply`, // Dados físicos
+      `l_text:Arial_Bold_34:${clube},co_rgb:FFD700,g_south,y_85/fl_layer_apply`, // Clube
+      `${fotoId}.jpg` // Foto de origem
     ].join('/');
 
     return res.status(200).json({ imageUrl: figurinhaUrl, pedidoId });
