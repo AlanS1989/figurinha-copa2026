@@ -32,7 +32,7 @@ h1{font-family:'Russo One',sans-serif;font-size:clamp(24px,6.5vw,34px);line-heig
 .btn-main{background:#1B3FA0;color:#fff;font-family:'Russo One',sans-serif;font-size:20px;letter-spacing:1px;border:none;border-radius:16px;padding:20px 0;width:100%;cursor:pointer;box-shadow:0 8px 24px rgba(27,63,160,0.35);text-transform:uppercase}
 .btn-main:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(27,63,160,0.45)}
 
-/* FORMULÁRIO DE ETAPAS - CENTRALIZAÇÃO ABSOLUTA AJUSTADA */
+/* FORMULÁRIO DE ETAPAS - CENTRALIZAÇÃO ABSOLUTA */
 #formWrap {
   display: none;
   min-height: 100vh;
@@ -91,10 +91,10 @@ h1{font-family:'Russo One',sans-serif;font-size:clamp(24px,6.5vw,34px);line-heig
 .progress-outer{background:#eee;border-radius:10px;height:10px;overflow:hidden;margin-top:10px}
 .progress-inner{height:100%;background:#1B3FA0;border-radius:10px;width:0%}
 
-/* TELA DE RESULTADO PREPARADA */
-#resultScreen{display:none;min-height:100vh;background:#FCD116;flex-direction:column;align-items:center;padding:24px 16px 40px;text-align:center}
-.figurinha-wrap{position:relative;display:inline-block;margin-bottom:16px}
-.figurinha-img{width:260px;border-radius:18px;display:block;box-shadow:0 12px 32px rgba(0,0,0,0.2)}
+/* TELA DE RESULTADO AJUSTADA - SEM IMAGEM QUEBRADA */
+#resultScreen{display:none;min-height:100vh;background:#FCD116;flex-direction:column;align-items:center;padding:40px 16px;text-align:center}
+.figurinha-wrap{position:relative;width:240px;height:323px;margin:0 auto 20px;border-radius:18px;box-shadow:0 12px 32px rgba(0,0,0,0.25);background:#FFF;overflow:hidden}
+.figurinha-img{width:100%;height:100%;object-fit:cover;display:block}
 .gol-text{font-family:'Russo One',sans-serif;font-size:42px;color:#1B3FA0;text-transform:uppercase;margin:12px 0 4px}
 .ready-text{font-size:18px;color:#1B3FA0;font-weight:800;margin-bottom:8px}
 .pay-info{font-size:14px;color:#0F172A;max-width:340px;margin:0 auto 16px;line-height:1.5;font-weight:700}
@@ -213,7 +213,6 @@ h1{font-family:'Russo One',sans-serif;font-size:clamp(24px,6.5vw,34px);line-heig
 <script>
 let photoFile = null, photoDataURL = null, generatedImgURL = null, userData = {};
 
-// Inicializa seletores de data
 (function(){
   const d=document.getElementById('selDia'), m=document.getElementById('selMes'), a=document.getElementById('selAno');
   for(let i=1;i<=31;i++) d.innerHTML+=`<option value="${i}">${String(i).padStart(2,'0')}</option>`;
@@ -233,7 +232,6 @@ function goLanding(){
   document.getElementById('landing').style.display='flex'; 
 }
 
-// Controle de fluxo com bloqueio estrito
 function goStep(n){
   if(n===2 && !validateStep1()) return;
   if(n===3 && !validateStep2()) return;
@@ -242,7 +240,6 @@ function goStep(n){
   document.getElementById('progressFill').style.width=(n*33.3)+'%';
 }
 
-// Validações de obrigatoriedade
 function validateStep1(){
   const nome = document.getElementById('inputNome').value.trim();
   if(!nome){ alert('ERRO: O nome do craque é obrigatório!'); return false; }
@@ -250,7 +247,6 @@ function validateStep1(){
   return true;
 }
 
-// Validação de Nascimento e E-mail
 function validateStep2(){
   const dia = document.getElementById('selDia').value;
   const mes = document.getElementById('selMes').value;
@@ -262,14 +258,13 @@ function validateStep2(){
   return true;
 }
 
-// Validação de Dados Físicos
 function validateStep3(){
   const altura = document.getElementById('inputAltura').value.trim();
   const peso = document.getElementById('inputPeso').value.trim();
   const clube = document.getElementById('inputClube').value.trim();
   
   if(!altura){ alert('ERRO: A altura é obrigatória!'); return false; }
-  if(!peso){ alert('ERRO: O peso é obrigatório!'); return false; }
+  if(!weight){ alert('ERRO: O peso é obrigatório!'); return false; }
   if(!clube){ alert('ERRO: O clube ou escola é obrigatório!'); return false; }
   return true;
 }
@@ -282,7 +277,7 @@ function handlePhoto(input){
 }
 
 async function startGeneration(){
-  if(!validateStep3()) return; // Trava estrita na última etapa antes de rodar a API
+  if(!validateStep3()) return;
 
   document.getElementById('formWrap').style.display='none';
   document.getElementById('loadingScreen').style.display='flex';
@@ -306,15 +301,21 @@ async function startGeneration(){
     const res = await fetch('/api/gerar', {method:'POST', body:fd});
     const data = await res.json();
     clearInterval(iv);
-    if(data.imageUrl) showResult(data.imageUrl);
+    if(data.imageUrl) {
+      showResult(data.imageUrl);
+    } else {
+      alert('A API não retornou a URL da imagem. Verifique os logs do Cloudinary.');
+    }
   } catch(e) { console.error(e); }
 }
 
 function showResult(url){
-  generatedImgURL=url;
   document.getElementById('loadingScreen').style.display='none';
   document.getElementById('resultScreen').style.display='flex';
-  document.getElementById('resultImg').src=url;
+  
+  // Força o recarregamento correto limpando o cache da tag de imagem
+  const imgElement = document.getElementById('resultImg');
+  imgElement.src = url;
 }
 
 function redirectToPayment(){
