@@ -10,7 +10,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Nunito',sans-serif;background:#FCD116;min-height:100vh;color:#0F172A}
 
-/* AREA DA LANDING PAGE - ESTILO DO SEU PRINT */
+/* LANDING PAGE - ESTILO IDÊNTICO AO SEU PRINT */
 #landing{display:flex;flex-direction:column;align-items:center;padding:40px 24px;text-align:center;background:#FCD116}
 .header-wrap{width:100%;max-width:480px;margin-bottom:16px}
 h1{font-family:'Russo One',sans-serif;font-size:clamp(24px,6.5vw,34px);line-height:1.2;color:#1B3FA0;text-transform:uppercase;letter-spacing:-0.5px}
@@ -18,7 +18,7 @@ h1{font-family:'Russo One',sans-serif;font-size:clamp(24px,6.5vw,34px);line-heig
 .counter-pill{background:#1B3FA0;color:#FFF;border-radius:30px;padding:10px 24px;font-size:14px;font-weight:800;margin:24px auto 0;display:inline-flex;align-items:center;gap:6px;box-shadow:0 4px 12px rgba(27,63,160,0.2)}
 .counter-pill span{color:#FCD116}
 
-/* LEQUE DE FIGURINHAS 3D */
+/* LEQUE DE CARDS 3D */
 .cards-container-3d {position:relative;width:100%;max-width:320px;height:340px;margin:24px auto;display:flex;align-items:center;justify-content:center}
 .card-3d {position:absolute;width:175px;border-radius:18px;box-shadow:0 12px 38px rgba(0,0,0,0.25);transition:transform 0.3s ease;background:#fff;overflow:hidden}
 .card-3d img {width:100%;display:block}
@@ -35,15 +35,15 @@ h1{font-family:'Russo One',sans-serif;font-size:clamp(24px,6.5vw,34px);line-heig
 /* FORMULÁRIO DE ETAPAS */
 #formWrap{display:none;min-height:100vh;background:#FCD116;padding:20px 16px 40px;align-items:flex-start;justify-content:center}
 .progress-bar-wrap{width:100%;max-width:420px;height:6px;background:rgba(27,63,160,.2);border-radius:3px;margin:0 auto 20px;overflow:hidden}
-.progress-bar-fill{height:100%;background:#1B3FA0;border-radius:3px;transition:width .4s}
+.progress-bar-fill{height:100%;background:#1B3FA0;border-radius:3px;transition:width .4s;width:33.3%}
 .step-card{background:#fff;border-radius:24px;padding:28px 24px;max-width:420px;width:100%;margin:0 auto;box-shadow:0 8px 32px rgba(0,0,0,0.12)}
 .step-emoji{font-size:42px;display:block;text-align:center;margin-bottom:12px}
 .step-title{font-family:'Russo One',sans-serif;color:#1B3FA0;font-size:22px;text-align:center;text-transform:uppercase;margin-bottom:6px}
 .step-sub{font-size:14px;color:#555;text-align:center;margin-bottom:24px;font-style:italic}
 .field-label{font-family:'Russo One',sans-serif;font-size:11px;letter-spacing:1px;color:#1B3FA0;margin-bottom:6px;display:block;text-transform:uppercase}
-.field-input{width:100%;border:2px solid #e0e0e0;border-radius:12px;padding:14px 16px;font-size:16px;outline:none;margin-bottom:18px}
+.field-input{width:100%;border:2px solid #e0e0e0;border-radius:12px;padding:14px 16px;font-size:16px;outline:none;margin-bottom:18px;font-family:'Nunito',sans-serif}
 .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px}
-.row3 select{width:100%;border:2px solid #e0e0e0;border-radius:12px;padding:13px 10px;font-size:15px;background:#fff;cursor:pointer}
+.row3 select{width:100%;border:2px solid #e0e0e0;border-radius:12px;padding:13px 10px;font-size:15px;background:#fff;cursor:pointer;font-family:'Nunito',sans-serif}
 .upload-zone{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
 .upload-box{border:2.5px dashed #ccc;border-radius:14px;padding:20px 12px;text-align:center;cursor:pointer;font-size:13px;font-weight:700;color:#555;display:flex;flex-direction:column;align-items:center;gap:8px}
 .upload-box input{display:none}
@@ -52,20 +52,20 @@ h1{font-family:'Russo One',sans-serif;font-size:clamp(24px,6.5vw,34px);line-heig
 .btn-back{flex:1;background:#fff;color:#1B3FA0;border:2px solid #1B3FA0;border-radius:12px;padding:14px;font-family:'Russo One',sans-serif;font-size:14px;cursor:pointer;text-transform:uppercase}
 .btn-next{flex:2;background:#1B3FA0;color:#fff;border:none;border-radius:12px;padding:14px;font-family:'Russo One',sans-serif;font-size:15px;cursor:pointer;text-transform:uppercase}
 
-/* TELA DE LOADING */
+/* TELA DE CARREGAMENTO */
 #loadingScreen{display:none;min-height:100vh;background:#FCD116;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px;text-align:center}
 .loading-card{background:#fff;border-radius:24px;padding:32px 24px;max-width:400px;width:100%}
 .loading-title{font-family:'Russo One',sans-serif;color:#1B3FA0;font-size:24px;text-transform:uppercase;margin-bottom:6px}
 .progress-outer{background:#eee;border-radius:10px;height:10px;overflow:hidden;margin-top:10px}
 .progress-inner{height:100%;background:#1B3FA0;border-radius:10px;width:0%}
 
-/* TELA DE RESULTADO (IGUAL AO SEU PRINT) */
+/* TELA DE RESULTADO PREPARADA */
 #resultScreen{display:none;min-height:100vh;background:#FCD116;flex-direction:column;align-items:center;padding:24px 16px 40px;text-align:center}
 .figurinha-wrap{position:relative;display:inline-block;margin-bottom:16px}
 .figurinha-img{width:260px;border-radius:18px;display:block;box-shadow:0 12px 32px rgba(0,0,0,0.2)}
 .gol-text{font-family:'Russo One',sans-serif;font-size:42px;color:#1B3FA0;text-transform:uppercase;margin:12px 0 4px}
 .ready-text{font-size:18px;color:#1B3FA0;font-weight:800;margin-bottom:8px}
-.pay-info{font-size:14px;color:#0F172A;max-width:340px;margin:0 auto 16px;line-height:1.5;font-weight: 700;}
+.pay-info{font-size:14px;color:#0F172A;max-width:340px;margin:0 auto 16px;line-height:1.5;font-weight:700}
 .price-big{font-family:'Russo One',sans-serif;font-size:54px;color:#00A859;margin:12px 0}
 .btn-pay{background:#1B3FA0;color:#fff;font-family:'Russo One',sans-serif;font-size:18px;border:none;border-radius:16px;padding:18px 0;width:100%;max-width:360px;cursor:pointer;text-transform:uppercase;box-shadow:0 6px 20px rgba(27,63,160,0.3)}
 .badge-verify{color:#00A859;font-weight:800;font-size:14px;margin-top:14px}
@@ -126,6 +126,7 @@ h1{font-family:'Russo One',sans-serif;font-size:clamp(24px,6.5vw,34px);line-heig
   <div id="step2" class="step-card" style="display:none">
     <span class="step-emoji">🎂</span>
     <div class="step-title">Nascimento e Contato</div>
+    <p class="step-sub">Preencha todos os campos obrigatórios</p>
     <div class="row3" style="margin-top:12px">
       <select id="selDia"><option value="">DIA</option></select>
       <select id="selMes"><option value="">MÊS</option></select>
@@ -142,6 +143,7 @@ h1{font-family:'Russo One',sans-serif;font-size:clamp(24px,6.5vw,34px);line-heig
   <div id="step3" class="step-card" style="display:none">
     <span class="step-emoji">⚽</span>
     <div class="step-title">Dados de Campo</div>
+    <p class="step-sub">Essas informações aparecerão no rodapé</p>
     <input class="field-input" id="inputAltura" type="text" placeholder="Altura (Ex: 1,75 m)"/>
     <input class="field-input" id="inputPeso" type="text" placeholder="Peso (Ex: 75 kg)"/>
     <input class="field-input" id="inputClube" type="text" placeholder="Clube (Ex: Flamengo)"/>
@@ -177,6 +179,7 @@ h1{font-family:'Russo One',sans-serif;font-size:clamp(24px,6.5vw,34px);line-heig
 <script>
 let photoFile = null, photoDataURL = null, generatedImgURL = null, userData = {};
 
+// Inicializa seletores de data
 (function(){
   const d=document.getElementById('selDia'), m=document.getElementById('selMes'), a=document.getElementById('selAno');
   for(let i=1;i<=31;i++) d.innerHTML+=`<option value="${i}">${String(i).padStart(2,'0')}</option>`;
@@ -185,33 +188,81 @@ let photoFile = null, photoDataURL = null, generatedImgURL = null, userData = {}
   for(let i=new Date().getFullYear();i>=1950;i--) a.innerHTML+=`<option value="${i}">${i}</option>`;
 })();
 
-function startForm(){ document.getElementById('landing').style.display='none'; document.getElementById('formWrap').style.display='flex'; goStep(1); }
-function goLanding(){ document.getElementById('formWrap').style.display='none'; document.getElementById('landing').style.display='flex'; }
+function startForm(){ 
+  document.getElementById('landing').style.display='none'; 
+  document.getElementById('formWrap').style.display='flex'; 
+  goStep(1); 
+}
+
+function goLanding(){ 
+  document.getElementById('formWrap').style.display='none'; 
+  document.getElementById('landing').style.display='flex'; 
+}
+
+// Controle de fluxo com bloqueio estrito
 function goStep(n){
+  if(n===2 && !validateStep1()) return;
+  if(n===3 && !validateStep2()) return;
+  
   for(let i=1;i<=3;i++) document.getElementById('step'+i).style.display = i===n?'block':'none';
   document.getElementById('progressFill').style.width=(n*33.3)+'%';
 }
+
+// Validações de obrigatoriedade
+function validateStep1(){
+  const nome = document.getElementById('inputNome').value.trim();
+  if(!nome){ alert('ERRO: O nome do craque é obrigatório!'); return false; }
+  if(!photoFile){ alert('ERRO: Você precisa enviar ou tirar uma foto do rosto!'); return false; }
+  return true;
+}
+
+function validateStep2(){
+  const dia = document.getElementById('selDia').value;
+  const mes = document.getElementById('selMes').value;
+  const ano = document.getElementById('selAno').value;
+  const email = document.getElementById('inputEmail').value.trim();
+  
+  if(!dia || !mes || !ano){ alert('ERRO: Selecione a data de nascimento completa!'); return false; }
+  if(!email || !email.includes('@')){ alert('ERRO: Digite um e-mail válido!'); return false; }
+  return true;
+}
+
+function validateStep3(){
+  const altura = document.getElementById('inputAltura').value.trim();
+  const peso = document.getElementById('inputPeso').value.trim();
+  const clube = document.getElementById('inputClube').value.trim();
+  
+  if(!altura){ alert('ERRO: A altura é obrigatória!'); return false; }
+  if(!peso){ alert('ERRO: O peso é obrigatório!'); return false; }
+  if(!clube){ alert('ERRO: O clube ou escola é obrigatório!'); return false; }
+  return true;
+}
+
 function handlePhoto(input){
   if(!input.files||!input.files[0])return;
   photoFile=input.files[0];
   const r=new FileReader(); r.onload=e=>{ photoDataURL=e.target.result; const p=document.getElementById('photoPreview'); p.src=photoDataURL; p.style.display='block'; };
   r.readAsDataURL(photoFile);
 }
+
 async function startGeneration(){
+  if(!validateStep3()) return; // Trava estrita na última etapa antes de rodar a API
+
   document.getElementById('formWrap').style.display='none';
   document.getElementById('loadingScreen').style.display='flex';
   
-  let pct=0; const iv=setInterval(()=>{ pct+=5; document.getElementById('loadBar').style.width=pct+'%'; if(pct>=95) clearInterval(iv); },150);
+  let pct=0; 
+  const iv=setInterval(()=>{ pct+=5; document.getElementById('loadBar').style.width=pct+'%'; if(pct>=95) clearInterval(iv); },150);
 
   userData={
-    nome: document.getElementById('inputNome').value,
+    nome: document.getElementById('inputNome').value.trim(),
     dia: document.getElementById('selDia').value,
     mes: document.getElementById('selMes').value,
     ano: document.getElementById('selAno').value,
-    email: document.getElementById('inputEmail').value,
-    altura: document.getElementById('inputAltura').value,
-    peso: document.getElementById('inputPeso').value,
-    clube: document.getElementById('inputClube').value
+    email: document.getElementById('inputEmail').value.trim(),
+    altura: document.getElementById('inputAltura').value.trim(),
+    peso: document.getElementById('inputPeso').value.trim(),
+    clube: document.getElementById('inputClube').value.trim()
   };
 
   try {
@@ -222,12 +273,14 @@ async function startGeneration(){
     if(data.imageUrl) showResult(data.imageUrl);
   } catch(e) { console.error(e); }
 }
+
 function showResult(url){
   generatedImgURL=url;
   document.getElementById('loadingScreen').style.display='none';
   document.getElementById('resultScreen').style.display='flex';
   document.getElementById('resultImg').src=url;
 }
+
 function redirectToPayment(){
   window.location.href = '/api/checkout?email='+encodeURIComponent(userData.email)+'&nome='+encodeURIComponent(userData.nome);
 }
